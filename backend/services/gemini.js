@@ -1,17 +1,23 @@
 import { GoogleGenAI } from "@google/genai";
 
 const getClient = () => {
-  if (!process.env.GEMINI_API_KEY) {
-    throw new Error("GEMINI_API_KEY is not configured");
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
+
+  if (!apiKey) {
+    throw new Error(
+      "GEMINI_API_KEY is missing. Create backend/.env with GEMINI_API_KEY=your_key."
+    );
   }
-  return new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+  return new GoogleGenAI({ apiKey });
 };
 
 export const analyzeProfile = async (profile) => {
   const ai = getClient();
 
   const response = await ai.models.generateContent({
-    model: "gemini-3.8-flash",
+    // Use a currently supported stable Gemini model.
+    model: "gemini-2.5-flash",
     contents: `You are SkillForge, an AI career and learning advisor.
 
 Analyze the student's profile and create a realistic personalized learning plan.
@@ -27,8 +33,14 @@ ${JSON.stringify(profile, null, 2)}`,
         properties: {
           careerReadiness: { type: "integer" },
           summary: { type: "string" },
-          strengths: { type: "array", items: { type: "string" } },
-          skillGaps: { type: "array", items: { type: "string" } },
+          strengths: {
+            type: "array",
+            items: { type: "string" },
+          },
+          skillGaps: {
+            type: "array",
+            items: { type: "string" },
+          },
           skillAnalysis: {
             type: "array",
             items: {
@@ -69,35 +81,56 @@ ${JSON.stringify(profile, null, 2)}`,
     },
   });
 
-  if (!response.text) {
+  const text = response.text?.trim();
+
+  if (!text) {
     throw new Error("Gemini returned an empty response");
   }
 
   let analysis;
+
   try {
-    analysis = JSON.parse(response.text);
+    analysis = JSON.parse(text);
   } catch {
     throw new Error("Gemini returned invalid JSON");
   }
 
   if (
     typeof analysis.careerReadiness !== "number" ||
+    typeof analysis.summary !== "string" ||
+    !Array.isArray(analysis.strengths) ||
+    !Array.isArray(analysis.skillGaps) ||
     !Array.isArray(analysis.skillAnalysis) ||
     !Array.isArray(analysis.roadmap)
   ) {
     throw new Error("Gemini returned an invalid analysis structure");
   }
 
-  analysis.careerReadiness = Math.max(0, Math.min(100, analysis.careerReadiness));
+  analysis.careerReadiness = Math.max(
+    0,
+    Math.min(100, analysis.careerReadiness)
+  );
+
   analysis.skillAnalysis = analysis.skillAnalysis.map((skill) => ({
-    ...skill,
-    level: Math.max(0, Math.min(100, Number(skill.level) || 0)),
+    name: String(skill.name || "Unknown skill"),
+    level: Math.max(
+      0,
+      Math.min(100, Number(skill.level) || 0)
+    ),
+    status: String(skill.status || "Developing"),
   }));
+
   analysis.roadmap = analysis.roadmap.map((item, index) => ({
-    ...item,
     week: Number(item.week) || index + 1,
-    status: item.status || (index === 0 ? "Current" : "Upcoming"),
+    title: String(item.title || `Learning milestone ${index + 1}`),
+    description: String(item.description || ""),
+    status: String(
+      item.status || (index === 0 ? "Current" : "Upcoming")
+    ),
   }));
+
+  analysis.estimatedWeeks =
+    Number(analysis.estimatedWeeks) || analysis.roadmap.length;
 
   return analysis;
 };
