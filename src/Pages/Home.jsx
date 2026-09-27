@@ -139,7 +139,9 @@ const Home = () => {
         <span>SkillForge</span>
         <span>Personalized learning, built around you.</span>
         <a href="https://github.com/axay-gamedev/SkillForge" target="_blank" rel="noreferrer" aria-label="SkillForge GitHub repository">
-          OpenSource
+        
+                OpenSource
+                <ArrowRight size={16} />
         </a>
       </footer>
     </div>
