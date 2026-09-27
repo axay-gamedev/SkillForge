@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Edit3, LogOut, Save, X } from "lucide-react";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
 import ProfileSidebar from "../Components/Profile/ProfileSidebar";
@@ -14,6 +14,8 @@ import Navbar from "../Components/Navbar";
 import { auth, db } from "../Firebase/firebase";
 import "../Styles/profile.css";
 import "../Styles/saved-profile.css";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const emptyProfile = {
   name: "",
@@ -46,10 +48,64 @@ const SavedProfile = ({ user, initialProfile }) => {
       setSaving(true);
       setError("");
       setMessage("");
-      await updateDoc(doc(db, "users", user.uid), { profile: draft });
+
+      const userRef = doc(db, "users", user.uid);
+
+      // Always persist the edited profile first. If AI is unavailable,
+      // the user's changes are still safe in Firestore.
+      await setDoc(
+        userRef,
+        {
+          profile: draft,
+          status: "analyzing",
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
+
+      try {
+        const response = await fetch(`${API_URL}/api/analyze`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(draft),
+        });
+
+        const data = await response.json().catch(() => null);
+        if (!response.ok) throw new Error(data?.error || "Analysis failed");
+
+        await setDoc(
+          userRef,
+          {
+            profile: draft,
+            analysis: data,
+            dashboard: {
+              careerReadiness: data.careerReadiness,
+              summary: data.summary,
+              strengths: data.strengths || [],
+              skillGaps: data.skillGaps || [],
+              skillAnalysis: data.skillAnalysis || [],
+              estimatedWeeks: data.estimatedWeeks || 0,
+              roadmap: data.roadmap || [],
+            },
+            status: "ready",
+            updatedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+
+        setMessage("Profile and career analysis updated successfully.");
+      } catch (analysisError) {
+        console.error("Profile re-analysis error:", analysisError);
+        await setDoc(
+          userRef,
+          { status: "analysis_failed", updatedAt: serverTimestamp() },
+          { merge: true }
+        );
+        setMessage("Profile saved. AI analysis could not be refreshed right now.");
+      }
+
       setProfile(draft);
       setEditing(false);
-      setMessage("Profile updated successfully.");
     } catch (err) {
       console.error("Profile update error:", err);
       setError("Unable to save your profile. Please try again.");
@@ -62,11 +118,17 @@ const SavedProfile = ({ user, initialProfile }) => {
     setDraft(profile);
     setEditing(false);
     setError("");
+    setMessage("");
   };
 
   const handleLogout = async () => {
-    await signOut(auth);
-    window.location.replace("/");
+    try {
+      await signOut(auth);
+      window.location.replace("/");
+    } catch (err) {
+      console.error("Logout error:", err);
+      setError("Unable to log out. Please try again.");
+    }
   };
 
   const projects = Array.isArray(profile.projects) ? profile.projects : [];
@@ -96,11 +158,11 @@ const SavedProfile = ({ user, initialProfile }) => {
                   <X size={15} /> Cancel
                 </button>
                 <button className="saved-profile-button primary" onClick={handleSave} disabled={saving}>
-                  <Save size={15} /> {saving ? "Saving..." : "Save changes"}
+                  <Save size={15} /> {saving ? "Saving & analyzing..." : "Save changes"}
                 </button>
               </>
             )}
-            <button className="saved-profile-button danger" onClick={handleLogout}>
+            <button className="saved-profile-button danger" onClick={handleLogout} disabled={saving}>
               <LogOut size={15} /> Logout
             </button>
           </div>
@@ -128,6 +190,7 @@ const SavedProfile = ({ user, initialProfile }) => {
               <div className="saved-profile-input"><label>Year</label><input value={draft.education?.year || ""} onChange={(e) => updateEducation("year", e.target.value)} /></div>
             </div>
             <div className="saved-profile-input"><label>Experience</label><textarea value={draft.experience || ""} onChange={(e) => updateDraft("experience", e.target.value)} /></div>
+            <p className="saved-profile-subtitle">Saving changes also refreshes your AI career analysis when the AI service is available.</p>
           </section>
         ) : (
           <div className="saved-profile-grid">
@@ -158,12 +221,12 @@ const SavedProfile = ({ user, initialProfile }) => {
 
             <section className="saved-profile-card">
               <h2>Career goal <span>Where you're heading</span></h2>
-              <p className="saved-profile-field"><label>Goal</label><p>{profile.careerGoal || "Not provided"}</p></p>
+              <div className="saved-profile-field"><label>Goal</label><p>{profile.careerGoal || "Not provided"}</p></div>
             </section>
 
             <section className="saved-profile-card">
               <h2>Experience <span>Projects and experience</span></h2>
-              {profile.experience ? <p className="saved-profile-field"><label>Experience</label><p>{profile.experience}</p></p> : null}
+              {profile.experience ? <div className="saved-profile-field"><label>Experience</label><p>{profile.experience}</p></div> : null}
               {projects.length ? <div className="saved-profile-list">{projects.map((project, i) => <div className="saved-profile-item" key={i}><strong>{project.name || project.title || `Project ${i + 1}`}</strong><p>{project.description || project.details || "Project added to your profile."}</p></div>)}</div> : !profile.experience && <p className="saved-profile-empty">No projects or experience added.</p>}
             </section>
           </div>
@@ -178,7 +241,6 @@ const Profile = () => {
   const [savedProfile, setSavedProfile] = useState(null);
   const [checking, setChecking] = useState(true);
   const [step, setStep] = useState(1);
-
   const [profile, setProfile] = useState(emptyProfile);
 
   useEffect(() => {
@@ -195,11 +257,7 @@ const Profile = () => {
       try {
         const snapshot = await getDoc(doc(db, "users", currentUser.uid));
         const data = snapshot.exists() ? snapshot.data() : null;
-        const existingProfile = data?.profile;
-
-        if (existingProfile) {
-          setSavedProfile(existingProfile);
-        }
+        if (data?.profile) setSavedProfile(data.profile);
       } catch (err) {
         console.error("Unable to load profile:", err);
       } finally {
@@ -214,9 +272,7 @@ const Profile = () => {
     return <div className="saved-profile-page"><Navbar /><div className="saved-profile-loading"><span className="saved-profile-spinner" />Loading profile...</div></div>;
   }
 
-  if (user && savedProfile) {
-    return <SavedProfile user={user} initialProfile={savedProfile} />;
-  }
+  if (user && savedProfile) return <SavedProfile user={user} initialProfile={savedProfile} />;
 
   const updateProfile = (updates) => setProfile((prev) => ({ ...prev, ...updates }));
   const nextStep = () => setStep((prev) => Math.min(prev + 1, 6));
