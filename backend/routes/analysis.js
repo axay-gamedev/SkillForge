@@ -20,6 +20,7 @@ router.post("/", async (req, res) => {
     console.error("Gemini analysis error:", error);
 
     const message = error instanceof Error ? error.message : "Unknown error";
+    const normalized = message.toLowerCase();
 
     if (message.includes("GEMINI_API_KEY")) {
       return res.status(500).json({
@@ -28,10 +29,23 @@ router.post("/", async (req, res) => {
     }
 
     if (
-      message.includes("API") ||
-      message.includes("model") ||
-      message.includes("quota") ||
-      message.includes("permission")
+      normalized.includes("high demand") ||
+      normalized.includes("temporarily unavailable") ||
+      normalized.includes("unavailable") ||
+      normalized.includes("rate limit") ||
+      normalized.includes("too many requests")
+    ) {
+      return res.status(503).json({
+        error: "Gemini is temporarily busy. Please try again in a few seconds.",
+        retryable: true,
+      });
+    }
+
+    if (
+      normalized.includes("api") ||
+      normalized.includes("model") ||
+      normalized.includes("quota") ||
+      normalized.includes("permission")
     ) {
       return res.status(502).json({
         error: "Gemini could not process the analysis request.",
