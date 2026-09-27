@@ -3,7 +3,11 @@ import { ArrowLeft, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, db } from "../../Firebase/firebase";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+// Use VITE_API_URL in deployments; fall back to the deployed backend so
+// the production build still works if the Vercel variable is not set.
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://skill-forge-backend-alpha.vercel.app";
 
 const ReviewStep = ({ profile, onBack }) => {
   const [analyzing, setAnalyzing] = useState(false);
