@@ -9,10 +9,11 @@ const Navbar = () => {
 
             <div className="nav-links">
                 <a href="/">Home</a>
+                  <a href="/dashboard">Dashboard</a>
                 <a href="/profile" >
                     Profile
                 </a>
-                <a href="/dashboard">Dashboard</a>
+              
             </div>
 
             <a href="https://github.com/axay-gamedev/SkillForge"><button className="get-started">

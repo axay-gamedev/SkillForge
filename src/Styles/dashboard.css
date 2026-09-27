@@ -201,3 +201,145 @@ body::-webkit-scrollbar-thumb:hover { background: #444; }
   .skill-status { display: none; }
   .skill-gaps-list { grid-template-columns: 1fr; }
 }
+/* =========================================
+   ROADMAP COMPLETION
+========================================= */
+
+.roadmap-heading-wrap {
+  min-width: 0;
+}
+
+.roadmap-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 8px;
+}
+
+.roadmap-progress-track {
+  width: 110px;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #242424;
+}
+
+.roadmap-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: #8b7cf6;
+  transition: width 0.3s ease;
+}
+
+.roadmap-progress-wrap span {
+  color: #666;
+  font-size: 9px;
+}
+
+
+/* CHECKBOX */
+
+.roadmap-checkbox {
+  position: relative;
+  z-index: 3;
+
+  width: 17px;
+  height: 17px;
+
+  margin-top: 1px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #4a4a4a;
+  border-radius: 50%;
+
+  background: #101010;
+  color: white;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.roadmap-checkbox:hover {
+  border-color: #8b7cf6;
+
+  box-shadow:
+    0 0 10px
+    rgba(139, 124, 246, 0.25);
+
+  transform: scale(1.08);
+}
+
+.roadmap-checkbox input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+  pointer-events: none;
+}
+
+.roadmap-checkbox.checked {
+  background: #8b7cf6;
+  border-color: #8b7cf6;
+
+  box-shadow:
+    0 0 12px
+    rgba(139, 124, 246, 0.3);
+}
+
+
+/* COMPLETED ROADMAP ITEM */
+
+.roadmap-item-completed
+  .roadmap-content h3 {
+  color: #777;
+
+  text-decoration:
+    line-through;
+
+  text-decoration-color:
+    #8b7cf6;
+}
+
+.roadmap-item-completed
+  .roadmap-content p {
+  color: #4f4f4f;
+}
+
+
+/* COMPLETED STATUS */
+
+.roadmap-status.completed {
+  color: #65c18c;
+
+  background:
+    rgba(101, 193, 140, 0.08);
+
+  border:
+    1px solid
+    rgba(101, 193, 140, 0.15);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+  .roadmap-progress-wrap {
+    margin-top: 6px;
+  }
+
+  .roadmap-progress-track {
+    width: 75px;
+  }
+
+}
