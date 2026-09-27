@@ -15,7 +15,9 @@ import { auth, db } from "../Firebase/firebase";
 import "../Styles/profile.css";
 import "../Styles/saved-profile.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://skill-forge-backend-alpha.vercel.app";
 
 const emptyProfile = {
   name: "",
@@ -51,8 +53,6 @@ const SavedProfile = ({ user, initialProfile }) => {
 
       const userRef = doc(db, "users", user.uid);
 
-      // Always persist the edited profile first. If AI is unavailable,
-      // the user's changes are still safe in Firestore.
       await setDoc(
         userRef,
         {
