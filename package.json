@@ -12,6 +12,7 @@
   "dependencies": {
     "firebase": "^12.19.0",
     "lucide-react": "^1.48.0",
+    "ogl": "^1.0.11",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-icons": "^5.7.0",
