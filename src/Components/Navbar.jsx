@@ -3,9 +3,9 @@ import { FaGithub } from 'react-icons/fa';
 const Navbar = () => {
     return (
         <nav className="navbar">
-            <div className="logo">
+            <a href="/"><div className="logo">
                 Skill<span>Forge</span>
-            </div>
+            </div></a>
 
             <div className="nav-links">
                 <a href="/">Home</a>
@@ -15,7 +15,7 @@ const Navbar = () => {
                 <a href="/dashboard">Dashboard</a>
             </div>
 
-            <a href="https://github.com/axay-gamedev"><button className="get-started">
+            <a href="https://github.com/axay-gamedev/SkillForge"><button className="get-started">
                 <FaGithub color="#000" size={24} strokeWidth={2} />
                 Contribute
                 <ArrowRight size={16} />

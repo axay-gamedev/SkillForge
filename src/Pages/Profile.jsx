@@ -9,6 +9,7 @@ import ProjectsStep from "../Components/Profile/ProjectsStep";
 import ReviewStep from "../Components/Profile/ReviewStep";
 
 import "../Styles/profile.css";
+import Navbar from "../Components/Navbar";
 
 const Profile = () => {
   const [step, setStep] = useState(1);
@@ -55,7 +56,7 @@ const Profile = () => {
 
   return (
     <div className="profile-page">
-
+      <Navbar/>
       <div className="profile-layout">
 
         <ProfileSidebar

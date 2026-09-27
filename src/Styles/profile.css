@@ -1,14 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 /* ================================
-   PROFILE PAGE
+   GLOBAL RESET & BASE
 ================================ */
 
 .profile-page {
   min-height: 100vh;
   width: 100%;
-  background: #02070d;
-  color: #f5f7fb;
-  padding: 90px 28px 40px;
+  background: #090a0f;
+  color: #ededed;
+  padding: 80px 24px 40px;
   box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ================================
@@ -17,14 +22,12 @@
 
 .profile-layout {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
-
   display: grid;
   grid-template-columns: 240px 1fr;
-  gap: 18px;
-
-  align-items: stretch;
+  gap: 24px;
+  align-items: start;
 }
 
 /* ================================
@@ -32,23 +35,14 @@
 ================================ */
 
 .profile-sidebar {
-  background: linear-gradient(
-    180deg,
-    #081321 0%,
-    #06101c 100%
-  );
-
-  border: 1px solid #142337;
-  border-radius: 12px;
-
-  padding: 22px 14px;
-
+  background: #111318;
+  border: 1px solid #222630;
+  border-radius: 8px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-
-  min-height: 520px;
-
+  gap: 4px;
+  min-height: 480px;
   box-sizing: border-box;
 }
 
@@ -58,32 +52,22 @@
 
 .profile-step {
   width: 100%;
-
   display: flex;
   align-items: center;
-
-  gap: 13px;
-
-  padding: 12px 10px;
-
+  gap: 12px;
+  padding: 10px;
   background: transparent;
   border: none;
-
-  color: #8d9db4;
-
+  color: #717786;
   text-align: left;
-
-  border-radius: 9px;
-
+  border-radius: 6px;
   cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .profile-step:hover {
-  background: rgba(255, 255, 255, 0.025);
+  background: #181b22;
+  color: #a1a7b5;
 }
 
 /* ================================
@@ -91,59 +75,46 @@
 ================================ */
 
 .step-number {
-  width: 29px;
-  height: 29px;
-
-  min-width: 29px;
-
-  border-radius: 50%;
-
-  border: 2px solid #40516c;
-
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 4px;
+  border: 1px solid #2d3340;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
-
-  color: #9aa8bc;
-
+  color: #717786;
   box-sizing: border-box;
+  background: #161920;
+  transition: all 0.15s ease;
 }
 
-/* Active step */
+/* Active Step */
 
 .profile-step.active {
+  background: #181b22;
   color: #ffffff;
 }
 
 .profile-step.active .step-number {
-  border-color: #7c3cff;
-  background: linear-gradient(
-    135deg,
-    #743cff,
-    #9b4dff
-  );
-
-  color: white;
-
-  box-shadow:
-    0 0 18px rgba(124, 60, 255, 0.35);
+  border-color: #ffffff;
+  background: #ffffff;
+  color: #090a0f;
+  box-shadow: none;
 }
 
-/* Completed step */
+/* Completed Step */
 
 .profile-step.completed {
-  color: #d6ddeb;
+  color: #c4c8d4;
 }
 
 .profile-step.completed .step-number {
-  border-color: #7c3cff;
-
+  border-color: #3b4252;
   color: #ffffff;
-
-  background: rgba(124, 60, 255, 0.12);
+  background: #222733;
 }
 
 /* ================================
@@ -153,24 +124,20 @@
 .step-info {
   display: flex;
   flex-direction: column;
-
-  gap: 3px;
-
+  gap: 2px;
   min-width: 0;
 }
 
 .step-info strong {
-  font-size: 14px;
-  font-weight: 600;
-
+  font-size: 13px;
+  font-weight: 500;
   color: inherit;
+  letter-spacing: -0.1px;
 }
 
 .step-info span {
   font-size: 11px;
-
-  color: #687991;
-
+  color: #525866;
   white-space: nowrap;
 }
 
@@ -179,28 +146,12 @@
 ================================ */
 
 .profile-form-card {
-  background:
-    radial-gradient(
-      circle at 85% 0%,
-      rgba(88, 58, 180, 0.08),
-      transparent 35%
-    ),
-    linear-gradient(
-      145deg,
-      #081321,
-      #050d17
-    );
-
-  border: 1px solid #15253a;
-
-  border-radius: 14px;
-
-  padding: 28px 30px;
-
-  min-height: 520px;
-
+  background: #111318;
+  border: 1px solid #222630;
+  border-radius: 8px;
+  padding: 32px;
+  min-height: 480px;
   box-sizing: border-box;
-
   display: flex;
   flex-direction: column;
 }
@@ -210,126 +161,98 @@
 ================================ */
 
 .profile-heading {
-  margin-bottom: 30px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid #1c2029;
+  padding-bottom: 20px;
 }
 
 .profile-heading span {
   display: inline-block;
-
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-
-  color: #8c5cff;
-
-  margin-bottom: 7px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #8e95a5;
+  margin-bottom: 6px;
 }
 
 .profile-heading h1 {
   margin: 0;
-
-  font-size: 25px;
-
-  font-weight: 700;
-
-  letter-spacing: -0.4px;
-
-  color: #f5f7fb;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: #ffffff;
 }
 
 .profile-heading p {
-  margin: 7px 0 0;
-
+  margin: 6px 0 0;
   font-size: 13px;
-
-  color: #71839c;
+  color: #717786;
 }
 
 /* ================================
-   FORM GRID
+   FORM GRID & FIELDS
 ================================ */
 
 .form-grid {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
-  gap: 18px;
+  gap: 16px;
 }
-
-/* ================================
-   FORM FIELD
-================================ */
 
 .form-field {
   display: flex;
-
   flex-direction: column;
-
-  gap: 8px;
-
-  margin-bottom: 20px;
+  gap: 6px;
+  margin-bottom: 18px;
 }
 
 .form-field label {
-  font-size: 13px;
-
-  font-weight: 600;
-
-  color: #dbe2ec;
+  font-size: 12px;
+  font-weight: 500;
+  color: #c4c8d4;
+  letter-spacing: -0.1px;
 }
 
 /* ================================
-   INPUTS
+   INPUTS & SELECTS
 ================================ */
 
 .form-field input,
 .form-field textarea,
+.form-field select,
 .skill-input-wrapper input {
   width: 100%;
-
   box-sizing: border-box;
-
-  background: #0b1929;
-
-  border: 1px solid #1b3048;
-
-  border-radius: 8px;
-
-  padding: 12px 13px;
-
-  color: #f2f5f9;
-
+  background: #090a0f;
+  border: 1px solid #222630;
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: #ffffff;
   font-family: inherit;
-
   font-size: 13px;
-
   outline: none;
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.form-field input {
-  height: 42px;
+.form-field input,
+.form-field select {
+  height: 38px;
 }
 
 .form-field input::placeholder,
 .form-field textarea::placeholder,
 .skill-input-wrapper input::placeholder {
-  color: #53667f;
+  color: #434956;
 }
 
 .form-field input:focus,
 .form-field textarea:focus,
+.form-field select:focus,
 .skill-input-wrapper input:focus {
-  border-color: #7040e8;
-
-  background: #0c1b2d;
-
-  box-shadow:
-    0 0 0 3px rgba(112, 64, 232, 0.09);
+  border-color: #525866;
+  background: #0e1015;
+  box-shadow: none;
 }
 
 /* ================================
@@ -337,59 +260,19 @@
 ================================ */
 
 .form-field textarea {
-  min-height: 115px;
-
+  min-height: 100px;
   resize: vertical;
-
   line-height: 1.5;
 }
 
 /* ================================
-   SELECT
-================================ */
-
-.form-field select {
-  width: 100%;
-
-  height: 42px;
-
-  padding: 0 13px;
-
-  border-radius: 8px;
-
-  border: 1px solid #1b3048;
-
-  background: #0b1929;
-
-  color: #f2f5f9;
-
-  font-family: inherit;
-
-  font-size: 13px;
-
-  outline: none;
-
-  cursor: pointer;
-}
-
-.form-field select:focus {
-  border-color: #7040e8;
-
-  box-shadow:
-    0 0 0 3px rgba(112, 64, 232, 0.09);
-}
-
-/* ================================
-   SKILLS
+   SKILLS SECTION
 ================================ */
 
 .skill-input-wrapper {
   display: flex;
-
-  gap: 10px;
-
+  gap: 8px;
   width: 100%;
-
   margin-bottom: 12px;
 }
 
@@ -398,252 +281,239 @@
 }
 
 .skill-input-wrapper button {
-  min-width: 88px;
-
-  border: none;
-
-  border-radius: 8px;
-
-  background: linear-gradient(
-    135deg,
-    #713cff,
-    #9148ef
-  );
-
-  color: white;
-
-  font-size: 13px;
-
-  font-weight: 600;
-
+  min-width: 80px;
+  border: 1px solid #2e3440;
+  border-radius: 6px;
+  background: #1c2029;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
-
   display: flex;
-
   align-items: center;
   justify-content: center;
-
   gap: 6px;
-
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .skill-input-wrapper button:hover {
-  transform: translateY(-1px);
-
-  box-shadow:
-    0 7px 20px rgba(113, 60, 255, 0.25);
+  background: #252a36;
+  border-color: #3f4758;
+  transform: none;
+  box-shadow: none;
 }
 
-/* ================================
-   SKILL SUGGESTIONS
-================================ */
+/* Skill Suggestions */
 
 .skill-suggestions {
   display: flex;
-
   flex-wrap: wrap;
-
-  gap: 7px;
-
-  margin-bottom: 12px;
+  gap: 6px;
+  margin-bottom: 14px;
 }
 
 .skill-suggestions button {
-  background: #0d1b2c;
-
-  border: 1px solid #1c3048;
-
-  color: #aab7ca;
-
-  border-radius: 7px;
-
-  padding: 7px 10px;
-
-  font-size: 12px;
-
+  background: transparent;
+  border: 1px dashed #282d38;
+  color: #717786;
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 11px;
   cursor: pointer;
-
-  transition: 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .skill-suggestions button:hover {
-  background: #17253a;
-
-  color: white;
-
-  border-color: #6540bd;
+  background: #161920;
+  color: #c4c8d4;
+  border-style: solid;
+  border-color: #3b4252;
 }
 
-/* ================================
-   SKILL TAGS
-================================ */
+/* Skill Tags */
 
 .skill-tags {
   display: flex;
-
   flex-wrap: wrap;
-
-  gap: 8px;
-
-  margin-top: 5px;
+  gap: 6px;
+  margin-top: 4px;
 }
 
 .skill-tag {
   display: flex;
-
   align-items: center;
-
-  gap: 7px;
-
-  padding: 7px 9px 7px 11px;
-
-  border-radius: 20px;
-
-  background: #0c1a2b;
-
-  border: 1px solid #1c3048;
-
-  color: #cbd5e4;
-
+  gap: 6px;
+  padding: 4px 8px 4px 10px;
+  border-radius: 4px;
+  background: #161920;
+  border: 1px solid #222630;
+  color: #c4c8d4;
   font-size: 12px;
 }
 
 .skill-tag button {
-  width: 17px;
-  height: 17px;
-
-  border-radius: 50%;
-
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
   border: none;
-
   background: transparent;
-
-  color: #6f819a;
-
+  color: #525866;
   display: flex;
-
   align-items: center;
   justify-content: center;
-
   padding: 0;
-
   cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
 }
 
 .skill-tag button:hover {
-  color: #ff6d7a;
-
-  background: rgba(255, 90, 110, 0.08);
+  color: #ff5c5c;
+  background: rgba(255, 92, 92, 0.1);
 }
 
 /* ================================
-   FORM ACTIONS
+   FORM ACTIONS & BUTTONS
 ================================ */
 
 .form-actions {
   margin-top: auto;
-
-  padding-top: 25px;
-
+  padding-top: 24px;
+  border-top: 1px solid #1c2029;
   display: flex;
-
   justify-content: flex-end;
-
   align-items: center;
-
-  gap: 10px;
+  gap: 8px;
 }
-
-/* ================================
-   BUTTONS
-================================ */
 
 .primary-button,
 .secondary-button {
-  height: 42px;
-
-  padding: 0 17px;
-
-  border-radius: 8px;
-
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 6px;
   font-family: inherit;
-
-  font-size: 13px;
-
-  font-weight: 600;
-
+  font-size: 12px;
+  font-weight: 500;
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
-  gap: 8px;
-
+  gap: 6px;
   cursor: pointer;
-
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease,
-    background 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .primary-button {
-  border: none;
-
-  color: white;
-
-  background: linear-gradient(
-    135deg,
-    #703cff,
-    #9148ee
-  );
-
-  box-shadow:
-    0 7px 20px rgba(112, 60, 255, 0.18);
+  border: 1px solid #ffffff;
+  color: #090a0f;
+  background: #ffffff;
+  box-shadow: none;
 }
 
 .primary-button:hover {
-  transform: translateY(-1px);
-
-  box-shadow:
-    0 10px 25px rgba(112, 60, 255, 0.28);
+  background: #e2e2e2;
+  border-color: #e2e2e2;
+  transform: none;
+  box-shadow: none;
 }
 
 .secondary-button {
-  border: 1px solid #22354d;
-
-  color: #aab8cb;
-
-  background: #0a1624;
+  border: 1px solid #222630;
+  color: #8e95a5;
+  background: transparent;
 }
 
 .secondary-button:hover {
-  background: #0e1c2d;
-
-  color: white;
-
-  border-color: #30465f;
+  background: #161920;
+  color: #ffffff;
+  border-color: #2d3340;
 }
 
 /* ================================
-   RESPONSIVE
+   REVIEW STEP
 ================================ */
+
+.review-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  overflow-y: auto;
+  max-height: 320px;
+  padding-right: 4px;
+}
+
+.review-block {
+  background: #090a0f;
+  border: 1px solid #1c2029;
+  border-radius: 6px;
+  padding: 14px;
+}
+
+.review-block h3 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #717786;
+}
+
+.review-block p {
+  margin: 4px 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #a1a7b5;
+}
+
+.review-block strong {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.review-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.review-skill {
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #161920;
+  border: 1px solid #222630;
+  color: #c4c8d4;
+  font-size: 11px;
+}
+
+.review-error {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #3d1d24;
+  background: #180c0e;
+  color: #ff6b76;
+  font-size: 12px;
+}
+
+/* ================================
+   ANIMATIONS & RESPONSIVE
+================================ */
+
+.spin {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
 @media (max-width: 900px) {
   .profile-page {
-    padding: 80px 18px 30px;
+    padding: 60px 16px 24px;
   }
-
   .profile-layout {
     grid-template-columns: 200px 1fr;
-
-    gap: 12px;
+    gap: 16px;
   }
-
   .profile-form-card {
     padding: 24px;
   }
@@ -653,182 +523,37 @@
   .profile-layout {
     grid-template-columns: 1fr;
   }
-
   .profile-sidebar {
     min-height: auto;
-
     display: grid;
-
-    grid-template-columns: repeat(
-      2,
-      1fr
-    );
-
-    gap: 4px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
   }
-
-  .profile-step {
-    padding: 9px;
-  }
-
   .step-info span {
     display: none;
   }
-
-  .form-grid {
+  .form-grid,
+  .review-section {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 480px) {
-  .profile-page {
-    padding: 75px 10px 20px;
-  }
-
-  .profile-form-card {
-    padding: 20px 16px;
-  }
-
-  .profile-heading h1 {
-    font-size: 21px;
-  }
-
   .profile-sidebar {
     grid-template-columns: 1fr;
   }
-
   .form-actions {
     flex-direction: column-reverse;
-
     width: 100%;
   }
-
   .primary-button,
   .secondary-button {
     width: 100%;
   }
-
   .skill-input-wrapper {
     flex-direction: column;
   }
-
   .skill-input-wrapper button {
-    height: 40px;
+    height: 38px;
   }
-}
-
-/* ================================
-   REVIEW STEP
-================================ */
-
-.review-section {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 12px;
-
-  overflow-y: auto;
-
-  max-height: 310px;
-
-  padding-right: 5px;
-}
-
-.review-block {
-  background: #091625;
-
-  border: 1px solid #172a40;
-
-  border-radius: 9px;
-
-  padding: 15px;
-}
-
-.review-block h3 {
-  margin: 0 0 10px;
-
-  font-size: 13px;
-
-  color: #ffffff;
-}
-
-.review-block p {
-  margin: 5px 0;
-
-  font-size: 12px;
-
-  line-height: 1.5;
-
-  color: #8192a9;
-}
-
-.review-block strong {
-  color: #b9c5d6;
-}
-
-.review-skills {
-  display: flex;
-
-  flex-wrap: wrap;
-
-  gap: 6px;
-}
-
-.review-skill {
-  padding: 5px 9px;
-
-  border-radius: 15px;
-
-  background: #101d30;
-
-  border: 1px solid #243752;
-
-  color: #b9c6d8;
-
-  font-size: 11px;
-}
-
-.review-error {
-  margin-top: 12px;
-
-  padding: 10px 12px;
-
-  border-radius: 7px;
-
-  border: 1px solid #54252c;
-
-  background: rgba(180, 40, 60, 0.1);
-
-  color: #ff7c88;
-
-  font-size: 12px;
-}
-
-.analyze-button {
-  min-width: 180px;
-}
-
-.spin {
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (max-width: 700px) {
-
-  .review-section {
-    grid-template-columns: 1fr;
-
-    max-height: 350px;
-  }
-
 }

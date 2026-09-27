@@ -1,71 +1,19 @@
-import { ArrowRight, BrainCircuit, Github, Route, Sparkles, Target } from "lucide-react";
+import { ArrowRight, BrainCircuit, Route, Sparkles, Target } from "lucide-react";
 import { Link } from "react-router-dom";
 import GradientWaves from "../Components/GradientWaves";
 import "../Styles/home.css";
+import Navbar from "../Components/Navbar";
 
 const Home = () => {
   return (
     <div className="home-page">
       {/* Landing page navigation */}
-      <header className="home-navbar">
-        <Link to="/" className="home-logo">
-          Skill<span>Forge</span>
-        </Link>
-
-        <nav className="home-nav-links" aria-label="Main navigation">
-          <a href="#how-it-works">How it works</a>
-          <a href="#features">Features</a>
-          <Link to="/login">Login</Link>
-        </nav>
-
-        <Link to="/profile" className="home-nav-cta">
-          Get started
-          <ArrowRight size={15} />
-        </Link>
-      </header>
+      <Navbar />
 
       <main>
         {/* Hero */}
-        <section className="home-hero">
-          <div className="hero-glow" />
-
-          <div className="hero-content">
-            <div className="hero-badge">
-              <Sparkles size={14} />
-              AI-powered career guidance
-            </div>
-
-            <h1>
-              Build the skills.
-              <br />
-              <span>Forge your career.</span>
-            </h1>
-
-            <p>
-              SkillForge analyzes where you are today, identifies the skills
-              you need for your target role, and builds a personalized path to
-              get you there.
-            </p>
-
-            <div className="hero-actions">
-              <Link to="/profile" className="hero-primary">
-                Build my roadmap
-                <ArrowRight size={17} />
-              </Link>
-
-              <Link to="/login" className="hero-secondary">
-                Sign in
-              </Link>
-            </div>
-
-            <div className="hero-note">
-              <span />
-              Takes a few minutes to set up
-            </div>
-          </div>
-        </section>
-
-        <div style={{ width: "100%", height: "600px", position: "relative" }}>
+        <div style={{ width: "100%", height: "600px", position: "relative", overflow: "hidden" }}>
+          {/* Background Layer */}
           <GradientWaves
             horizonColor="#5227FF"
             waveColor="#FF9FFC"
@@ -88,6 +36,43 @@ const Home = () => {
             grain={true}
             grainIntensity={0.05}
           />
+
+          {/* Foreground Hero Content */}
+          <section className="home-hero" style={{ position: "relative", zIndex: 10 }}>
+            <div className="hero-glow" />
+
+            <div className="hero-content">
+              <div className="hero-badge">
+                <Sparkles size={14} />
+                AI-powered career guidance
+              </div>
+
+              <h1>
+                Build the skills.
+                <br />
+                <span>Forge your career.</span>
+              </h1>
+
+              <p>
+                SkillForge analyzes where you are today, identifies the skills
+                you need for your target role, and builds a personalized path to
+                get you there.
+              </p>
+
+              <div className="hero-actions">
+                <Link to="/profile" className="hero-primary">
+                  Build my roadmap
+                  <ArrowRight size={17} />
+                </Link>
+
+                <Link to="/login" className="hero-secondary">
+                  Sign in
+                </Link>
+              </div>
+
+              
+            </div>
+          </section>
         </div>
 
         {/* How it works */}
@@ -154,7 +139,7 @@ const Home = () => {
         <span>SkillForge</span>
         <span>Personalized learning, built around you.</span>
         <a href="https://github.com/axay-gamedev/SkillForge" target="_blank" rel="noreferrer" aria-label="SkillForge GitHub repository">
-          <Github size={15} /> Open source
+          OpenSource
         </a>
       </footer>
     </div>
