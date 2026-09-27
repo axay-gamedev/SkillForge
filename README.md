@@ -4,6 +4,9 @@
 
 **Problem Statement 05 — Education & Employability**
 
+<img width="1600" height="816" alt="image" src="https://github.com/user-attachments/assets/fcb8558e-4059-4dab-be30-13b095baddc3" />
+
+
 SkillForge is an AI-powered career guidance platform that converts a student's current profile into a measurable, personalized, and trackable learning roadmap.
 
 Students often know the role they want, but do not know which skills they lack, what projects can demonstrate those skills, or how to prioritize their learning. SkillForge addresses this gap by analyzing a student's profile against their target role and generating an actionable learning plan.
@@ -30,6 +33,7 @@ and uses AI to generate:
 - **Persistent Dashboard** — profile, analysis, and roadmap progress are stored per user.
 
 ---
+<img width="1600" height="832" alt="image" src="https://github.com/user-attachments/assets/b72a1dbb-3e1d-4308-87dd-a39a19a3dc77" />
 
 ## Core User Flow
 
