@@ -16,8 +16,7 @@ export const analyzeProfile = async (profile) => {
   const ai = getClient();
 
   const response = await ai.models.generateContent({
-    // Use a currently supported stable Gemini model.
-    model: "gemini-2.5-flash",
+    model: "gemini-3.8-flash",
     contents: `You are SkillForge, an AI career and learning advisor.
 
 Analyze the student's profile and create a realistic personalized learning plan.
@@ -33,14 +32,8 @@ ${JSON.stringify(profile, null, 2)}`,
         properties: {
           careerReadiness: { type: "integer" },
           summary: { type: "string" },
-          strengths: {
-            type: "array",
-            items: { type: "string" },
-          },
-          skillGaps: {
-            type: "array",
-            items: { type: "string" },
-          },
+          strengths: { type: "array", items: { type: "string" } },
+          skillGaps: { type: "array", items: { type: "string" } },
           skillAnalysis: {
             type: "array",
             items: {
@@ -88,7 +81,6 @@ ${JSON.stringify(profile, null, 2)}`,
   }
 
   let analysis;
-
   try {
     analysis = JSON.parse(text);
   } catch {
@@ -106,17 +98,11 @@ ${JSON.stringify(profile, null, 2)}`,
     throw new Error("Gemini returned an invalid analysis structure");
   }
 
-  analysis.careerReadiness = Math.max(
-    0,
-    Math.min(100, analysis.careerReadiness)
-  );
+  analysis.careerReadiness = Math.max(0, Math.min(100, analysis.careerReadiness));
 
   analysis.skillAnalysis = analysis.skillAnalysis.map((skill) => ({
     name: String(skill.name || "Unknown skill"),
-    level: Math.max(
-      0,
-      Math.min(100, Number(skill.level) || 0)
-    ),
+    level: Math.max(0, Math.min(100, Number(skill.level) || 0)),
     status: String(skill.status || "Developing"),
   }));
 
@@ -124,13 +110,10 @@ ${JSON.stringify(profile, null, 2)}`,
     week: Number(item.week) || index + 1,
     title: String(item.title || `Learning milestone ${index + 1}`),
     description: String(item.description || ""),
-    status: String(
-      item.status || (index === 0 ? "Current" : "Upcoming")
-    ),
+    status: String(item.status || (index === 0 ? "Current" : "Upcoming")),
   }));
 
-  analysis.estimatedWeeks =
-    Number(analysis.estimatedWeeks) || analysis.roadmap.length;
+  analysis.estimatedWeeks = Number(analysis.estimatedWeeks) || analysis.roadmap.length;
 
   return analysis;
 };
