@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ArrowLeft, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, db } from "../../Firebase/firebase";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -11,6 +11,7 @@ const ReviewStep = ({ profile, onBack }) => {
 
   const handleAnalyze = async () => {
     const user = auth.currentUser;
+
     if (!user) {
       setError("Your session has expired. Please sign in again.");
       return;
@@ -20,6 +21,21 @@ const ReviewStep = ({ profile, onBack }) => {
       setAnalyzing(true);
       setError("");
 
+      const userRef = doc(db, "users", user.uid);
+
+      // Save the profile first so it is not lost if the AI request fails.
+      await setDoc(
+        userRef,
+        {
+          uid: user.uid,
+          email: user.email || null,
+          profile,
+          status: "analyzing",
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
+
       const response = await fetch(`${API_URL}/api/analyze`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -27,24 +43,59 @@ const ReviewStep = ({ profile, onBack }) => {
       });
 
       const data = await response.json().catch(() => null);
+
       if (!response.ok) {
         throw new Error(data?.error || "Analysis failed");
       }
 
+      // Store the AI result as both analysis and dashboard data.
+      // Keeping dashboard data in Firestore means the dashboard survives
+      // refreshes, logout/login, and browser restarts.
       await setDoc(
-        doc(db, "users", user.uid),
+        userRef,
         {
+          uid: user.uid,
+          email: user.email || null,
           profile,
           analysis: data,
-          updatedAt: new Date(),
+          dashboard: {
+            careerReadiness: data.careerReadiness,
+            summary: data.summary,
+            strengths: data.strengths || [],
+            skillGaps: data.skillGaps || [],
+            skillAnalysis: data.skillAnalysis || [],
+            estimatedWeeks: data.estimatedWeeks || 0,
+            roadmap: data.roadmap || [],
+          },
+          status: "ready",
+          updatedAt: serverTimestamp(),
         },
         { merge: true }
       );
 
       window.location.assign("/dashboard");
     } catch (err) {
-      console.error(err);
-      setError(err.message || "Unable to analyze your profile. Please try again.");
+      console.error("Profile save/analyze error:", err);
+
+      try {
+        if (auth.currentUser) {
+          await setDoc(
+            doc(db, "users", auth.currentUser.uid),
+            {
+              status: "analysis_failed",
+              updatedAt: serverTimestamp(),
+            },
+            { merge: true }
+          );
+        }
+      } catch (saveError) {
+        console.error("Failed to update analysis status:", saveError);
+      }
+
+      setError(
+        err.message ||
+          "Unable to analyze your profile. Please try again."
+      );
     } finally {
       setAnalyzing(false);
     }
